@@ -154,7 +154,7 @@ jobs:
             # The .sarif file can later be uploaded to github, so that we can see the 
             # results of the scan directly from the PR.
 
-            - name: 'Scan code'
+            - name: 'Code Scan'
               run: |
                   cd changed-sources
                   sfdx scanner:run --format sarif --target './**/*.cls' --category "Design,Best Practices,Performance" --outfile 'apexScanResults.sarif'  
