@@ -29,7 +29,6 @@ jobs:
               run: | 
                   echo y | sfdx plugins:install sfdx-git-delta
                   sfdx plugins 
-                  cat package/package.xml
                   
             # Checkout the source code
             - name: 'Checkout source code'
@@ -46,7 +45,7 @@ jobs:
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
 
             # Authenticate to org
             - name: 'Authenticate to UAT Org'
@@ -56,8 +55,8 @@ jobs:
             #  run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
 
             - name: 'Deploy new, modified metadata'
-            #  run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
-              run: sfdx force:mdapi:deploy -x package/package.xml --testlevel RunLocalTests --json
+              run: |
+                  sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
 
             - name: 'Deploy destructive changes (if any) to UAT org'
               run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
