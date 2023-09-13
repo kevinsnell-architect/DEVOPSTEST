@@ -149,10 +149,7 @@ jobs:
                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
 
             # Now we can use the sfdx scanner to scan the code in the delta directory
-            # The output of the scan is stored in a file called apexScanResults.sarif
-
-            # The .sarif file can later be uploaded to github, so that we can see the 
-            # results of the scan directly from the PR.
+            # The output of the scan is stored
 
             - name: 'Scan code'
               run: |
@@ -160,13 +157,11 @@ jobs:
                   sfdx scanner:run -f html -t "force-app" -e "eslint,retire-js,pmd,cpd" -c "Design,Best Practices,Code Style,Performance,Security" --outfile ./reports/scan-reports.html
                   cd ..
 
-            # Now we upload the .sarif file as explained in the previous step
+            # Now we upload the .html file as explained in the previous step
             - name: cli-scan-report
               - uses: actions/upload-artifact@v3
               with:
                 path: reports/scan-reports.html
-
-            
 
             # We do a check-only deploy and we only run the tests specified in the PR
             # If the env variable does not equal 'all', we know that there is a list of
