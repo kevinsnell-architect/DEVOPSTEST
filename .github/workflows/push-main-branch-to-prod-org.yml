@@ -7,6 +7,8 @@ on:
       branches: [ main ]
       paths:
         - 'force-app/**'
+      paths-ignore:
+      - '**.yml'  
           
 # Jobs to be executed
 jobs:
