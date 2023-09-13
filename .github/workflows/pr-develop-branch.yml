@@ -47,6 +47,10 @@ jobs:
             # changed between commits, so that we can only deploy that metadata
             # to the destination org
 
+            - name: Hello world action
+                with: # Set the secret as an input
+                super_secret: ${{ secrets.SFDX_UAT_URL }}
+
             - name: 'Checkout source code'
               uses: actions/checkout@v3
               with:
@@ -84,9 +88,7 @@ jobs:
               # as this allows us to reference the list in a subsequent step.  If you
               # were using a normal env variable, its value would not be available outside this step.
               run: |
-                  echo "DOES THIS DISPLAY"
                   echo $PR_BODY > ./pr_body.txt
-                  echo "DOES THIS DISPLAY2"
                   node ./parsePR.js              
                   TESTS=$(cat testsToRun.txt)       
                   echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
@@ -136,7 +138,7 @@ jobs:
             - name: 'Populate auth file with SFDX_UAT_URL secret of UAT org'
               shell: bash
               run: |
-                  echo ${{ secrets.UAT}} > ./SFDX_UAT_URL.txt
+                  echo ${{ secrets.SFDX_UAT_URL}} > ./SFDX_UAT_URL.txt
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to UAT Org'
