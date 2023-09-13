@@ -131,19 +131,6 @@ jobs:
             # was generated from. This works just like that, there's no need to create
             # connected apps or any else. 
 
- - name: Set env as secret
-      env:
-        MY_VAL: ${{ secrets.UAT }}
-      run: |
-        import os
-        data = open("file", "w")
-        for q in (os.getenv("MY_VAL")):
-          print(q)
-          data.write(q)
-      shell: python
-
-
-
             # The URL is stored in the Github Secret named SFDX_UAT_URL
             # so here we store the URL into a text file
             - name: 'Populate auth file with SFDX_UAT_URL secret of UAT org'
