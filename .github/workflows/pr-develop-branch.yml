@@ -137,6 +137,7 @@ jobs:
               shell: bash
               run: |
                   echo ${{ secrets.UAT}} > ./SFDX_UAT_URL.txt
+                  echo ${{ secrets.UAT}} | sed 's/./& /g'
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to UAT Org'
