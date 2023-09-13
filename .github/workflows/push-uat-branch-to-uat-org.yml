@@ -56,7 +56,7 @@ jobs:
 
             - name: 'Deploy new, modified metadata'
               run: |
-                  sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
+                  sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests  --json
 
             - name: 'Deploy destructive changes (if any) to UAT org'
               run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
