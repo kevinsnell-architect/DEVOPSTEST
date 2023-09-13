@@ -47,10 +47,6 @@ jobs:
             # changed between commits, so that we can only deploy that metadata
             # to the destination org
 
-            - name: Hello world action
-                with: # Set the secret as an input
-                super_secret: ${{ secrets.SFDX_UAT_URL }}
-
             - name: 'Checkout source code'
               uses: actions/checkout@v3
               with:
