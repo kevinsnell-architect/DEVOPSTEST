@@ -29,19 +29,20 @@ jobs:
               run: | 
                   echo y | sfdx plugins:install sfdx-git-delta
                   sfdx plugins 
-
+                  cat package/package.xml
+                  
             # Checkout the source code
             - name: 'Checkout source code'
               uses: actions/checkout@v3
               with:
                 fetch-depth: 0
-
+            
             # Store secret for UAT org
             - name: 'Populate auth file with SFDX_URL secret of the UAT org'
               shell: bash
               run: |
                   echo ${{ secrets.SFDX_UAT_URL}} > ./SFDX_UAT_URL.txt
-
+        
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources
@@ -51,8 +52,12 @@ jobs:
             - name: 'Authenticate to UAT Org'
               run: sfdx auth:sfdxurl:store -f ./SFDX_UAT_URL.txt -s -a uat
 
-            - name: 'Deploy the entire branch to UAT org'
-              run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+            #- name: 'Deploy the entire branch to UAT org'
+            #  run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+
+            - name: 'Deploy new, modified metadata'
+            #  run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+              run: sfdx force:mdapi:deploy -x package/package.xml --testlevel RunLocalTests --json
 
             - name: 'Deploy destructive changes (if any) to UAT org'
               run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
